@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'TLRemoteConfig_Example' do
+  pod 'TLRemoteConfig', :path => '../'
+
+  target 'TLRemoteConfig_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

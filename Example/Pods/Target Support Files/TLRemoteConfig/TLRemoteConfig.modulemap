@@ -1,0 +1,6 @@
+framework module TLRemoteConfig {
+  umbrella header "TLRemoteConfig-umbrella.h"
+
+  export *
+  module * { export * }
+}

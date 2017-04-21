@@ -7,12 +7,13 @@
 //
 
 #import "TLAppDelegate.h"
+@import TLRemoteConfig;
 
 @implementation TLAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
+    [TLRemoteConfig updateRemoteConfig];
     return YES;
 }
 
@@ -30,7 +31,11 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    NSDictionary *appkey = [TLRemoteConfig dictionaryForKey:@"appkey"];
+    NSArray *native = [TLRemoteConfig arrayForKey:@"pos_native"];
+    BOOL isreviewing = [TLRemoteConfig boolForKey:@"a_taolu_enable"];
+    NSArray *wrongArr = [TLRemoteConfig arrayForKey:@"other"];
+    NSLog(@"appkey:%@ , native:%@, a_taolu_enable:%d, wrongarr:%@", appkey, native, (int)isreviewing, wrongArr);
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

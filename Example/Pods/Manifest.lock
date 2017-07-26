@@ -14,8 +14,10 @@ PODS:
   - AFNetworking/Serialization (3.1.0)
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
-  - TLRemoteConfig (0.1.0):
+  - GDCategory (0.1.0)
+  - TLRemoteConfig (0.1.1):
     - AFNetworking (~> 3)
+    - GDCategory
 
 DEPENDENCIES:
   - TLRemoteConfig (from `../`)
@@ -26,7 +28,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
-  TLRemoteConfig: 88a61037a2aaeb182680965481aef639ef376b39
+  GDCategory: 809238a9cd50a685651545a698d171deb7bc98ec
+  TLRemoteConfig: 8c661220624f20f3b1728a7168ab5b7b7362bbc0
 
 PODFILE CHECKSUM: 882fb08493e9378721f9fa160f9eb7a7301b4728
 

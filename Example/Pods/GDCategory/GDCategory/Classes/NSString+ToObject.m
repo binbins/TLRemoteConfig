@@ -7,9 +7,9 @@
 //
 
 #ifdef DEBUG
-#define OCPLog(format, ...) NSLog(format, ## __VA_ARGS__)
+#define GDLog(format, ...) NSLog(format, ## __VA_ARGS__)
 #else
-#define OCPLog(format, ...)
+#define GDLog(format, ...)
 #endif
 
 #import "NSString+ToObject.h"
@@ -22,7 +22,7 @@
     NSError *err;
     NSDictionary *result = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&err];
     if (err || ![result isKindOfClass:[NSDictionary class]]){
-        OCPLog(@"string-->dictionary faild err = %@", err);
+        GDLog(@"string-->dictionary faild, err = %@", err);
         return @{};
     }
     return result;
@@ -34,7 +34,7 @@
     NSError *err;
     NSArray *result = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableContainers error:&err];
     if (err || ![result isKindOfClass:[NSArray class]]){
-        OCPLog(@"string-->array faild err = %@", err);
+        GDLog(@"string-->array faild, err = %@", err);
         return @[];
     }
     return result;

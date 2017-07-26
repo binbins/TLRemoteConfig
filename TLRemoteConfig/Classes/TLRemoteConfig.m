@@ -15,6 +15,7 @@
 
 @interface TLRemoteConfig()
 @property (nonatomic, retain)AFHTTPSessionManager *afManager;
+@property (nonatomic, assign)BOOL onRequesting;
 
 @end
 
@@ -25,7 +26,7 @@
     if (_afManager == nil) {
         _afManager = [AFHTTPSessionManager manager];
         _afManager.requestSerializer = [AFHTTPRequestSerializer serializer];
-        _afManager.requestSerializer.timeoutInterval = 15;
+        _afManager.requestSerializer.timeoutInterval = 30;
         _afManager.requestSerializer.cachePolicy = NSURLRequestReloadIgnoringCacheData;
         _afManager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
         _afManager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"application/json", @"text/html", @"text/json", @"text/plain", @"text/javascript", nil];
@@ -36,21 +37,29 @@
 #pragma mark - 暴露方法
 
 + (AFHTTPSessionManager *)afManager {
-    return [[TLRemoteConfig alloc] afManager];
+    return [[TLRemoteConfig shareManager] afManager];
 }
 
 + (void)updateRemoteConfig {
     
+    if ([TLRemoteConfig shareManager].onRequesting) {
+        return;
+    }
+    
+    [TLRemoteConfig shareManager].onRequesting = YES;
+    
     [[TLRemoteConfig afManager] GET:TAOURL parameters:[self getRequestParas] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         
-        if ([USERDEFAULTS objectForKey:LocalConfigKey] == nil) {
-            [USERDEFAULTS setObject:@{@"la":@"la"} forKey:LocalConfigKey];
+        if ([TLUSERDEFAULTS objectForKey:TLREMOTEKEY] == nil) {
+            [TLUSERDEFAULTS setObject:@{@"la":@"la"} forKey:TLREMOTEKEY];
         }
         [TLRemoteConfig checkConfigResult:responseObject];
+        [TLRemoteConfig shareManager].onRequesting = NO;
         
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         
-        NSLog(@"请求在线参数失败");
+        [TLRemoteConfig shareManager].onRequesting = NO;
+        NSLog(@"请求在线参数失败: %@", error);
     }];
 }
 
@@ -103,7 +112,7 @@
 
 + (NSDictionary *)localConfig {
     
-    NSDictionary *dict = [USERDEFAULTS objectForKey:LocalConfigKey];
+    NSDictionary *dict = [TLUSERDEFAULTS objectForKey:TLREMOTEKEY];
     if ([SafeObject objIsNull:dict]) {
         [self updateRemoteConfig];
         return  @{};
@@ -112,6 +121,14 @@
 }
 
 #pragma mark - 内部方法
+static TLRemoteConfig *tlManager;
+
++ (TLRemoteConfig *)shareManager {
+    if (tlManager == nil) {
+        tlManager = [[TLRemoteConfig alloc] init];
+    }
+    return tlManager;
+}
 
 + (NSString *) md5:(NSString *) input {
     const char *cStr = [input UTF8String];
@@ -127,10 +144,10 @@
 }
 
 + (NSDictionary *)getRequestParas {
-    NSString *language = [CurrentLanguage hasPrefix:@"zh-"] ? @"CN" : @"EN";
-    NSString *md5BundleId = [self md5: AppBundleID];
+    NSString *language = [TLCurrentLanguage hasPrefix:@"zh-"] ? @"CN" : @"EN";
+    NSString *md5BundleId = [self md5: TLAppBundleID];
     
-    NSDictionary *paras = @{@"os": @"iOS", @"appid" : md5BundleId, @"appver":AppVerName, @"appvercode":AppVerCode, @"sys_name":SysName, @"sys_ver":SysVersion, @"sys_model":SysModel, @"lan":language};
+    NSDictionary *paras = @{@"os": @"iOS", @"appid" : md5BundleId, @"appver":TLAppVerName, @"appvercode":TLAppVerCode, @"sys_name":TLSysName, @"sys_ver":TLSysVersion, @"sys_model":TLSysModel, @"lan":language};
     return paras;
 }
 
@@ -152,8 +169,8 @@
         return;
     }
     
-    [USERDEFAULTS setObject:res forKey:LocalConfigKey];
-    NSLog(@"request succeed ! content:%@",res);
+    [TLUSERDEFAULTS setObject:res forKey:TLREMOTEKEY];
+    NSLog(@"request succeed ! 执行 [TLRemoteConfig localConfig] 查看参数内容");
 }
 
 @end

@@ -144,11 +144,63 @@ static TLRemoteConfig *tlManager;
 }
 
 + (NSDictionary *)getRequestParas {
-    NSString *language = [TLCurrentLanguage hasPrefix:@"zh-"] ? @"CN" : @"EN";
+    NSString *language = [self languagePara];
     NSString *md5BundleId = [self md5: TLAppBundleID];
     
     NSDictionary *paras = @{@"os": @"iOS", @"appid" : md5BundleId, @"appver":TLAppVerName, @"appvercode":TLAppVerCode, @"sys_name":TLSysName, @"sys_ver":TLSysVersion, @"sys_model":TLSysModel, @"lan":language};
     return paras;
+}
+/*
+ public const string LANGUAGE_CHINESE = "CN";
+ public const string LANGUAGE_CHINESE_TRADITIONAL = "CT";
+ public const string LANGUAGE_ENGLISH = "EN";
+ public const string LANGUAGE_FRENCH = "FR";
+ public const string LANGUAGE_GERMAN = "GE";
+ 
+ public const string LANGUAGE_ITALY = "IT";
+ public const string LANGUAGE_JAPANESE = "JP";
+ public const string LANGUAGE_KOREA = "KR";
+ public const string LANGUAGE_RUSSIA = "RU";
+ public const string LANGUAGE_SPANISH = "SP";
+ */
++ (NSString *)languagePara {
+
+    if ([TLCurrentLanguage hasPrefix:@"zh-"]) {
+        if ([TLCurrentLanguage hasPrefix:@"zh-Hans"]) {
+            return @"CN";
+        }
+        return @"CT";
+    }
+    
+    if ([TLCurrentLanguage hasPrefix:@"fr-"]) {
+        return @"FR";   //法语
+    }
+    
+    if ([TLCurrentLanguage hasPrefix:@"de-"]) {
+        return @"GE";   //德语
+    }
+    
+    if ([TLCurrentLanguage hasPrefix:@"it-"]) {
+        return @"IT";   //意大利语
+    }
+    
+    if ([TLCurrentLanguage hasPrefix:@"ja-"]) {
+        return @"JP";   //日语
+    }
+    
+    if ([TLCurrentLanguage hasPrefix:@"ko-"]) {
+        return @"KR";   //韩语
+    }
+    
+    if ([TLCurrentLanguage hasPrefix:@"ru-"]) {
+        return @"RU";   //俄语
+    }
+    
+    if ([TLCurrentLanguage hasPrefix:@"es-"]) {
+        return @"SP";   //西班牙语
+    }
+    
+    return @"EN";   //默认英文
 }
 
 + (void)checkConfigResult:(NSDictionary *)result {
@@ -172,5 +224,7 @@ static TLRemoteConfig *tlManager;
     [TLUSERDEFAULTS setObject:res forKey:TLREMOTEKEY];
     NSLog(@"request succeed ! 执行 [TLRemoteConfig localConfig] 查看参数内容");
 }
+
+
 
 @end

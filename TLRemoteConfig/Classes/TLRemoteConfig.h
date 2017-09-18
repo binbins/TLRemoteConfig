@@ -30,6 +30,8 @@
 #pragma mark - 从在线参数(params字典)中取值
 + (void)updateRemoteConfig;
 
++ (void)updateRemoteConfigHttp;
+
 + (NSString *)stringForKey:(NSString *)key;
 
 + (NSDictionary *)dictionaryForKey:(NSString *)key;

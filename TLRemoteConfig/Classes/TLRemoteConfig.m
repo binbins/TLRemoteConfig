@@ -7,6 +7,7 @@
 //
 
 #define TAOURL @"http://service.kv.dandanjiang.tv/remote"
+#define TAOURL_HTTPS @"https://service.kv.dandanjiang.tv/remote"
 
 #import "TLRemoteConfig.h"
 #import "SafeObject.h"
@@ -42,25 +43,12 @@
 
 + (void)updateRemoteConfig {
     
-    if ([TLRemoteConfig shareManager].onRequesting) {
-        return;
-    }
+    [self updateRemoteConfig:TAOURL_HTTPS];
+}
+
++ (void)updateRemoteConfigHttp {
     
-    [TLRemoteConfig shareManager].onRequesting = YES;
-    
-    [[TLRemoteConfig afManager] GET:TAOURL parameters:[self getRequestParas] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-        
-        if ([TLUSERDEFAULTS objectForKey:TLREMOTEKEY] == nil) {
-            [TLUSERDEFAULTS setObject:@{@"la":@"la"} forKey:TLREMOTEKEY];
-        }
-        [TLRemoteConfig checkConfigResult:responseObject];
-        [TLRemoteConfig shareManager].onRequesting = NO;
-        
-    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-        
-        [TLRemoteConfig shareManager].onRequesting = NO;
-        NSLog(@"请求在线参数失败: %@", error);
-    }];
+    [self updateRemoteConfig:TAOURL];
 }
 
 + (NSString *)stringForKey:(NSString *)key {
@@ -128,6 +116,29 @@ static TLRemoteConfig *tlManager;
         tlManager = [[TLRemoteConfig alloc] init];
     }
     return tlManager;
+}
+
++ (void)updateRemoteConfig:(NSString *)url {
+    
+    if ([TLRemoteConfig shareManager].onRequesting) {
+        return;
+    }
+    
+    [TLRemoteConfig shareManager].onRequesting = YES;
+    
+    [[TLRemoteConfig afManager] GET:url parameters:[self getRequestParas] progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        
+        if ([TLUSERDEFAULTS objectForKey:TLREMOTEKEY] == nil) {
+            [TLUSERDEFAULTS setObject:@{@"la":@"la"} forKey:TLREMOTEKEY];
+        }
+        [TLRemoteConfig checkConfigResult:responseObject];
+        [TLRemoteConfig shareManager].onRequesting = NO;
+        
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        
+        [TLRemoteConfig shareManager].onRequesting = NO;
+        NSLog(@"请求在线参数失败: %@", error);
+    }];
 }
 
 + (NSString *) md5:(NSString *) input {

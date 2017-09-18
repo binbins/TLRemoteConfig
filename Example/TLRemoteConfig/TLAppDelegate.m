@@ -31,11 +31,8 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
-    NSDictionary *appkey = [TLRemoteConfig dictionaryForKey:@"appkey"];
-    NSArray *native = [TLRemoteConfig arrayForKey:@"pos_native"];
-    BOOL isreviewing = [TLRemoteConfig boolForKey:@"a_taolu_enable"];
-    NSArray *wrongArr = [TLRemoteConfig arrayForKey:@"other"];
-    NSLog(@"appkey:%@ , native:%@, a_taolu_enable:%d, wrongarr:%@", appkey, native, (int)isreviewing, wrongArr);
+    
+    NSLog(@"本地字典:%@", [TLRemoteConfig localConfig]);
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

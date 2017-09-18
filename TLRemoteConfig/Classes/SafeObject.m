@@ -51,7 +51,7 @@
     }
     
     NSString *value = [dict objectForKey:key];
-    if ((value != nil) || [value isKindOfClass:[NSString class]]) {
+    if ([value isKindOfClass:[NSString class]] && (value != nil) ) {
         return value;
     }
     return @"";
@@ -70,7 +70,7 @@
     }
     
     NSDictionary *value = [dict objectForKey:key];
-    if ((value != nil) || [value isKindOfClass:[NSDictionary class]]) {
+    if ([value isKindOfClass:[NSDictionary class]] && (value != nil)) {
         return value;
     }
     return @{};
@@ -129,7 +129,7 @@
     }
     
     NSString *value = [dict objectForKey:key];
-    if ((value != nil) || [value isKindOfClass:[NSString class]] || ![value isEqualToString:@""]) {
+    if ((value != nil) && [value isKindOfClass:[NSString class]]) {
         NSString *url = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
         return [NSURL URLWithString:url];
     }
@@ -148,7 +148,7 @@
     }
     
     NSArray *value = [dict objectForKey:key];
-    if ((value != nil) || [value isKindOfClass:[NSArray class]]) {
+    if ((value != nil) && [value isKindOfClass:[NSArray class]]) {
         return value;
     }
     return @[];

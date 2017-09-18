@@ -113,7 +113,7 @@
 + (NSDictionary *)localConfig {
     
     NSDictionary *dict = [TLUSERDEFAULTS objectForKey:TLREMOTEKEY];
-    if ([SafeObject objIsNull:dict]) {
+    if ([dict allKeys].count < 3) { //小于3认定为没有获取到数据
         [self updateRemoteConfig];
         return  @{};
     }

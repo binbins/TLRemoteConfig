@@ -39,7 +39,6 @@
 }
 
 + (NSString *)safeString:(NSDictionary *)dict objectForKey:(NSString *)key {
-    
     if ([self objIsNull:dict] || ![dict isKindOfClass:[NSDictionary class]]) {
         NSLog(@"字典非法");
         return @"";
@@ -51,6 +50,10 @@
     }
     
     NSString *value = [dict objectForKey:key];
+    if ([value isKindOfClass:[NSNumber class]]) {
+        return ((NSNumber *)value).stringValue;
+    }
+    
     if ([value isKindOfClass:[NSString class]] && (value != nil) ) {
         return value;
     }

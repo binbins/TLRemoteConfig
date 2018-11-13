@@ -15,12 +15,17 @@ PODS:
   - AFNetworking/UIKit (3.1.0):
     - AFNetworking/NSURLSession
   - GDCategory (0.1.0)
-  - TLRemoteConfig (0.1.2):
+  - TLRemoteConfig (0.1.4):
     - AFNetworking (~> 3)
     - GDCategory
 
 DEPENDENCIES:
   - TLRemoteConfig (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AFNetworking
+    - GDCategory
 
 EXTERNAL SOURCES:
   TLRemoteConfig:
@@ -29,8 +34,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 5e0e199f73d8626b11e79750991f5d173d1f8b67
   GDCategory: 809238a9cd50a685651545a698d171deb7bc98ec
-  TLRemoteConfig: bddb7ef5350b4d47cda155821ad42e0bac7497bf
+  TLRemoteConfig: 40d5f0780d963a76650c5e63351f56ac27dae9f1
 
 PODFILE CHECKSUM: 882fb08493e9378721f9fa160f9eb7a7301b4728
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.5.3

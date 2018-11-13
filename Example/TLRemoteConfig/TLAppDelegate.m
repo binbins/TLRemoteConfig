@@ -33,6 +33,7 @@
 {
     
     NSLog(@"本地字典:%@", [TLRemoteConfig localConfig]);
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application

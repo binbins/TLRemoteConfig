@@ -7,6 +7,7 @@
 //
 
 #import "TLViewController.h"
+@import TLRemoteConfig;
 
 @interface TLViewController ()
 
@@ -24,6 +25,12 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSDictionary *testDict = @{@"test_key":@(39345678)};
+    NSString *value = [SafeObject safeString:testDict objectForKey:@"test_key"];
+    NSLog(@"取值 %@", value);
 }
 
 @end

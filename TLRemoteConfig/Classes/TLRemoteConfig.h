@@ -19,7 +19,7 @@
 #define TLREMOTEKEY @"AD_config_key"
 
 #import <Foundation/Foundation.h>
-@import AFNetworking;
+#import <AFNetworking/AFNetworking.h>
 
 @interface TLRemoteConfig : NSObject
 
